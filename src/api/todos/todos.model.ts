@@ -1,10 +1,17 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { WithId } from 'mongodb';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import * as z from 'zod';
 
-const Todo = z.object({
+import { db } from '../../config/db';
+
+export const Todo = z.object({
   content: z.string().min(1),
-  done: z.boolean(),
-});
+  done: z.boolean().default(false),
+}); // Schema
 
-type Todo = z.infer<typeof Todo>;
 
-export default Todo;
+
+export type Todo = z.infer<typeof Todo>; // Types
+export type TodoWithId = WithId<Todo>;
+export const Todos = db.collection<Todo>('todos');
